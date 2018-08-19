@@ -24,6 +24,7 @@ public class Main extends Application {
 
 
 
+
         root.getChildren().add(mRectangel);
         root.getChildren().add(mText);
 

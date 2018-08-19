@@ -16,6 +16,7 @@ public final class PitchHandler {
 
     private ArrayList<PitchChangeListener> mPitchChangeListeners;
 
+
     public PitchHandler() {
         mReceiver = new PianoReceiver();
         mPitchChangeListeners = new ArrayList<>();
