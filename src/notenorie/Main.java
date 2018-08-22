@@ -1,12 +1,19 @@
 package notenorie;
 
 import javafx.application.Application;
+import javafx.geometry.Orientation;
+import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.FlowPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import notenorie.layout.ScorePane;
+
+import javax.swing.border.Border;
 
 
 public class Main extends Application {
@@ -16,20 +23,28 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
-        Group root = new Group();
+        BorderPane root = new BorderPane();
+
+        FlowPane flowPane = new FlowPane(Orientation.VERTICAL);
 
         initVariables();
 
-        PianoPane pane = new PianoPane();
+        ScorePane score = new ScorePane();
+        ScorePane score2 = new ScorePane();
 
+        score.setAlignment(Pos.CENTER);
+        score2.setAlignment(Pos.CENTER);
 
+        flowPane.getChildren().add(score);
 
+        flowPane.setAlignment(Pos.CENTER);
 
-        root.getChildren().add(mRectangel);
-        root.getChildren().add(mText);
+        BorderPane.setAlignment(flowPane, Pos.CENTER);
+
+        root.setCenter(flowPane);
 
         primaryStage.setTitle("Hello World");
-        primaryStage.setScene(new Scene(root, 300, 275));
+        primaryStage.setScene(new Scene(root, 500, 500));
         primaryStage.show();
     }
 
