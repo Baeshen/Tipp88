@@ -32,8 +32,8 @@ public class ScorePane extends GridPane {
     private static double GRID_BOX_HEIGHT = 3;
 
 
-    private static final int CLEF_G = 1;
-    private static final int CLEF_F = 2;
+    public static final int CLEF_G = 1;
+    public static final int CLEF_F = 2;
 
     public ScorePane () {
 
@@ -53,7 +53,7 @@ public class ScorePane extends GridPane {
         setClef(ScorePane.CLEF_G);
     }
 
-    public void init () {
+    private void init () {
         mNoteContainer = new ArrayList<>();
 
         for (int i = 0; i < 40; i++) {
@@ -75,7 +75,7 @@ public class ScorePane extends GridPane {
         for (int i : mNoteContainer) {
 
             int columnIndex = sNoteFrontOffset + sNoteOffset * mNoteCounter ;
-            int rowIndex    = 0;
+            int rowIndex    = i;
 
             add(new Circle(getGridBoxHeight()/2, Color.BLACK),columnIndex, rowIndex );
 
