@@ -33,7 +33,7 @@ public final class PitchHandler {
     private void setKeyState (int key) {
         if (mPitchStatusContainer.containsKey(key)) {
             mPitchStatusContainer.put(key, !mPitchStatusContainer.get(key));
-            notifyPichChageListeners(key, mPitchStatusContainer.get(key));
+            notifyPitchChageListeners(key, mPitchStatusContainer.get(key));
         }
 
     }
@@ -46,7 +46,7 @@ public final class PitchHandler {
         mPitchChangeListeners.add(listener);
     }
 
-    private void notifyPichChageListeners (int pitch, boolean status) {
+    private void notifyPitchChageListeners(int pitch, boolean status) {
         for (PitchChangeListener listener : mPitchChangeListeners) {
             listener.pitchChanged(pitch, status);
         }
@@ -78,6 +78,7 @@ public final class PitchHandler {
 
             if (status != (byte) 254) {
                 setKeyState(pitch);
+                System.out.println(pitch);
             }
 
             //defaultSystemReceiver.send(message, timeStamp);

@@ -11,7 +11,11 @@ public class ScorePane extends GridPane {
 
     private Rectangle mPlaceholder;
 
+
     private ArrayList<Integer> mNoteContainer;
+
+    // Noten Schlüssel
+    private int mClef;
 
     private double mScale;
 
@@ -27,6 +31,10 @@ public class ScorePane extends GridPane {
     private static double GRID_BOX_WIDTH = 3;
     private static double GRID_BOX_HEIGHT = 3;
 
+
+    private static final int CLEF_G = 1;
+    private static final int CLEF_F = 2;
+
     public ScorePane () {
 
         mUpperLimit = 17;
@@ -37,6 +45,12 @@ public class ScorePane extends GridPane {
         //setGridLinesVisible(true);
 
         init();
+    }
+
+    public ScorePane (int clef) {
+        this();
+
+        setClef(ScorePane.CLEF_G);
     }
 
     public void init () {
@@ -108,5 +122,9 @@ public class ScorePane extends GridPane {
 
     public double getLowerLimit() {
         return mLowerLimit;
+    }
+
+    public void setClef(int clef) {
+        this.mClef = clef;
     }
 }

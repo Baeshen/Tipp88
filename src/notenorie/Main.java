@@ -11,6 +11,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import notenorie.data.PitchHandler;
 import notenorie.layout.ScorePane;
 
 import javax.swing.border.Border;
@@ -24,6 +25,8 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception{
         BorderPane root = new BorderPane();
+
+        PitchHandler.getInstance();
 
         FlowPane flowPane = new FlowPane(Orientation.VERTICAL);
 
