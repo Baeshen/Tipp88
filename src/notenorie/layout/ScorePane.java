@@ -2,16 +2,27 @@ package notenorie.layout;
 
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
+
+import java.util.ArrayList;
 
 public class ScorePane extends GridPane {
 
     private Rectangle mPlaceholder;
 
+    private ArrayList<Integer> mNoteContainer;
+
     private double mScale;
 
     private double mUpperLimit;
     private double mLowerLimit;
+
+
+    private int mNoteCounter;
+
+    private static int sNoteFrontOffset = 5;
+    private static int sNoteOffset = 3;
 
     private static double GRID_BOX_WIDTH = 3;
     private static double GRID_BOX_HEIGHT = 3;
@@ -23,12 +34,13 @@ public class ScorePane extends GridPane {
 
         mScale = 5;
 
-        init();
         //setGridLinesVisible(true);
+
+        init();
     }
 
     public void init () {
-
+        mNoteContainer = new ArrayList<>();
 
         for (int i = 0; i < 40; i++) {
             for (int j = 0; j < 32; j++) {
@@ -43,6 +55,27 @@ public class ScorePane extends GridPane {
         }
 
     }
+
+
+    private void displayNotes () {
+        for (int i : mNoteContainer) {
+
+            int columnIndex = sNoteFrontOffset + sNoteOffset * mNoteCounter ;
+            int rowIndex    = 0;
+
+            add(new Circle(getGridBoxHeight()/2, Color.BLACK),columnIndex, rowIndex );
+
+            mNoteCounter++;
+        }
+    }
+
+
+
+    public void addNote (int pitch) {
+        mNoteContainer.add(pitch);
+    }
+
+
 
     public double getGridBoxWidth() {
         return GRID_BOX_WIDTH * mScale;
