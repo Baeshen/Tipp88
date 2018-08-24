@@ -22,29 +22,32 @@ public class ScoreHelper {
         for (int i = 0, counter = 12; i < 40; ) {
             for (int step : clefFsteps) {
                 if (i < 40)
-                    mClefF.put(counter, i);
+                    mClefF.put(counter, i++);
                 counter += step;
             }
         }
 
-        int[] clefGsteps = {2,1,2,2,1,2,2};
+        //int[] clefGsteps = {2,1,2,2,1,2,2};
+        int[] clefGsteps = {2,2,2,1,2,2,1};
 
-        for (int i = 0, counter = 33; i < 40; ) {
+        for (int i = 39, counter = 41; i >= 0; ) {
             for (int step : clefGsteps) {
-                if (i < 40)
-                    mClefG.put(counter, i);
+                if (i >= 0)
+                    mClefG.put(counter, i--);
                 counter += step;
             }
         }
     }
 
-    public int getNoteScorePosition(int clef, int note) {
+    public int getNoteScorePosition(int clef, int note) throws NullPointerException{
         switch (clef) {
 
             case ScorePane.CLEF_G:
+                System.out.println("Clef G");
                 return mClefG.get(note);
 
             case ScorePane.CLEF_F:
+                System.out.println("Clef F");
                 return mClefF.get(note);
 
             default:

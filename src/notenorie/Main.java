@@ -5,40 +5,48 @@ import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import notenorie.data.PitchChangeListener;
 import notenorie.data.PitchHandler;
 import notenorie.layout.ScorePane;
 
 import javax.swing.border.Border;
 
 
-public class Main extends Application {
+public class Main extends Application
+        implements PitchChangeListener {
 
     private Rectangle mRectangel;
     private Text mText;
+
+    private ScorePane mScore;
 
     @Override
     public void start(Stage primaryStage) throws Exception{
         BorderPane root = new BorderPane();
 
-        PitchHandler.getInstance();
+        PitchHandler.getInstance().registerPitchChangeListener(this);
 
         FlowPane flowPane = new FlowPane(Orientation.VERTICAL);
 
+        ScrollPane scrollPane = new ScrollPane();
+
         initVariables();
 
-        ScorePane score = new ScorePane();
-        ScorePane score2 = new ScorePane();
+        mScore = new ScorePane();
 
-        score.setAlignment(Pos.CENTER);
-        score2.setAlignment(Pos.CENTER);
+        mScore.setAlignment(Pos.CENTER);
 
-        flowPane.getChildren().add(score);
+        scrollPane.setContent(mScore);
+
+
+        flowPane.getChildren().add(scrollPane);
 
         flowPane.setAlignment(Pos.CENTER);
 
@@ -47,7 +55,7 @@ public class Main extends Application {
         root.setCenter(flowPane);
 
         primaryStage.setTitle("Hello World");
-        primaryStage.setScene(new Scene(root, 500, 500));
+        primaryStage.setScene(new Scene(root, 800, 500));
         primaryStage.show();
     }
 
@@ -67,5 +75,16 @@ public class Main extends Application {
 
     public static void main(String[] args) {
         launch(args);
+    }
+
+
+    @Override
+    public void pitchChanged(int pitch, boolean status) {
+        System.out.println(Thread.currentThread().getName());
+
+        if (status) {
+            mScore.addNote(pitch);
+        }
+
     }
 }
