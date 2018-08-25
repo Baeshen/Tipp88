@@ -56,13 +56,10 @@ public class ScoreHelper {
      */
     public int getNoteScorePosition(int clef, int note) throws NullPointerException{
         switch (clef) {
-
             case ScorePane.CLEF_G:
-                System.out.println("Clef G");
                 return mClefG.get(note);
 
             case ScorePane.CLEF_F:
-                System.out.println("Clef F");
                 return mClefF.get(note);
 
             default:
