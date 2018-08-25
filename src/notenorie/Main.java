@@ -4,74 +4,87 @@ import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
-import javafx.scene.Group;
 import javafx.scene.Scene;
-import javafx.scene.control.ScrollPane;
+import javafx.scene.control.Menu;
+import javafx.scene.control.MenuBar;
+import javafx.scene.control.MenuItem;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
-import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import notenorie.data.Note;
 import notenorie.data.PitchChangeListener;
 import notenorie.data.PitchHandler;
 import notenorie.layout.ScorePane;
 
-import javax.swing.border.Border;
+import java.util.HashMap;
 
 
 public class Main extends Application
         implements PitchChangeListener {
 
-    private Rectangle mRectangel;
-    private Text mText;
+    private Scene mMainScene;
 
-    private ScorePane mScore;
+
+    private BorderPane mRoot;
+
+    private FlowPane mCenterPane;
+    private ScorePane mGScore;
+
+
+    private MenuBar mMenuBar;
+
+    private Menu mViewMenu;
+    private MenuItem mViewMain;
+    private MenuItem mViewSettings;
+
+    private HashMap<Note, Boolean> mPossibleNotes;
 
     @Override
     public void start(Stage primaryStage) throws Exception{
-        BorderPane root = new BorderPane();
 
-        PitchHandler.getInstance().registerPitchChangeListener(this);
+        noteSetup();
 
-        FlowPane flowPane = new FlowPane(Orientation.VERTICAL);
+        mGScore = new ScorePane();
+        mGScore.setAlignment(Pos.CENTER);
 
-        ScrollPane scrollPane = new ScrollPane();
+        mCenterPane = new FlowPane(Orientation.VERTICAL);
+        mCenterPane.getChildren().add(mGScore);
+        mCenterPane.setAlignment(Pos.CENTER);
+        BorderPane.setAlignment(mCenterPane, Pos.CENTER);
 
-        initVariables();
+        mRoot = new BorderPane();
 
-        mScore = new ScorePane();
+        mMainScene = new Scene(mRoot, 800, 500);
 
-        mScore.setAlignment(Pos.CENTER);
+        mMenuBar = new MenuBar();
 
-        scrollPane.setContent(mScore);
+        mViewMenu = new Menu("View");
+
+        mViewMain = new MenuItem("Score");
+        mViewSettings = new MenuItem("Settings");
 
 
-        flowPane.getChildren().add(scrollPane);
+        mViewSettings.setOnAction((e) -> {
+            //((FlowPane)mSettingsScene.getRoot()).setPrefHeight(mRoot.getPrefHeight());
+            //((FlowPane)mSettingsScene.getRoot()).setPrefWidth(mRoot.getPrefWidth());
+        });
 
-        flowPane.setAlignment(Pos.CENTER);
+        mViewMain.setOnAction((e) -> {
+            primaryStage.setScene(mMainScene);
+        });
 
-        BorderPane.setAlignment(flowPane, Pos.CENTER);
 
-        root.setCenter(flowPane);
 
-        primaryStage.setTitle("Hello World");
-        primaryStage.setScene(new Scene(root, 800, 500));
+        mViewMenu.getItems().addAll(mViewMain,mViewSettings);
+        mMenuBar.getMenus().addAll(mViewMenu);
+
+        mRoot.setCenter(mCenterPane);
+        mRoot.setTop(mMenuBar);
+
+        primaryStage.setScene(mMainScene);
+        primaryStage.setTitle("Notenorie");
         primaryStage.show();
-    }
-
-    private void initVariables () {
-        mRectangel = new Rectangle(50, 50, Color.RED);
-
-        mRectangel.setX(100);
-        mRectangel.setY(100);
-
-        mText = new Text("Lorem ipsum");
-
-        mText.setText("Test TEst test");
-
-        mText.setX(50);
-        mText.setY(50);
+        PitchHandler.getInstance().registerPitchChangeListener(this);
     }
 
     public static void main(String[] args) {
@@ -79,11 +92,34 @@ public class Main extends Application
     }
 
 
+    private void noteSetup () {
+        mPossibleNotes = new HashMap<>();
+        String[] noteNames = {"C", "D", "E", "F", "G", "A", "H"};
+        int[] midiSteps = {2,2,1,2,2,2,1};
+
+        for (int midi = 24, i = 0,nameCounter = 1; midi <= 95;) {
+
+            mPossibleNotes.put(new Note(noteNames[i] + nameCounter, midi), false);
+
+            System.out.println("Note: " + noteNames[i] + nameCounter + " - " +  midi + " -- " + midiSteps[i]);
+
+            midi += midiSteps[i];
+
+            if (noteNames[i].equals("H")) {
+                nameCounter++;
+                i = 0;
+                continue;
+            }
+            i++;
+        }
+
+    }
+
     @Override
     public void pitchChanged(int pitch, boolean status) {
         if (status) {
             Platform.runLater(() -> {
-                mScore.addNote(pitch);
+                mGScore.addNote(pitch);
             });
         }
 
