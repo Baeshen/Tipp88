@@ -1,6 +1,7 @@
 package notenorie;
 
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
@@ -80,10 +81,10 @@ public class Main extends Application
 
     @Override
     public void pitchChanged(int pitch, boolean status) {
-        System.out.println(Thread.currentThread().getName());
-
         if (status) {
-            mScore.addNote(pitch);
+            Platform.runLater(() -> {
+                mScore.addNote(pitch);
+            });
         }
 
     }
