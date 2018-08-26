@@ -61,8 +61,6 @@ public class ScorePane extends GridPane {
     private static int sDefaultClef = CLEF_G;
 
 
-
-
     /**
      * Lowest level Constructor
      *

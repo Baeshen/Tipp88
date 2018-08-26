@@ -5,9 +5,7 @@ import javafx.application.Platform;
 import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Menu;
-import javafx.scene.control.MenuBar;
-import javafx.scene.control.MenuItem;
+import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.stage.Stage;
@@ -15,8 +13,10 @@ import notenorie.data.Note;
 import notenorie.data.PitchChangeListener;
 import notenorie.data.PitchHandler;
 import notenorie.layout.ScorePane;
+import notenorie.layout.SettingsPane;
 
 import java.util.HashMap;
+import java.util.Set;
 
 
 public class Main extends Application
@@ -29,7 +29,8 @@ public class Main extends Application
 
     private FlowPane mCenterPane;
     private ScorePane mGScore;
-
+    private ScrollPane mScrollPane;
+    private SettingsPane mSettingsPane;
 
     private MenuBar mMenuBar;
 
@@ -41,16 +42,23 @@ public class Main extends Application
 
     @Override
     public void start(Stage primaryStage) throws Exception{
-
-        noteSetup();
-
         mGScore = new ScorePane();
         mGScore.setAlignment(Pos.CENTER);
 
+        mSettingsPane = new SettingsPane();
+        mSettingsPane.setAlignment(Pos.CENTER);
+
+
+        mScrollPane = new ScrollPane(mSettingsPane);
+        mScrollPane.setFitToWidth(true);
+        mScrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        mScrollPane.setPrefSize(800,500);
+
         mCenterPane = new FlowPane(Orientation.VERTICAL);
-        mCenterPane.getChildren().add(mGScore);
+        mCenterPane.getChildren().addAll(mGScore);
         mCenterPane.setAlignment(Pos.CENTER);
         BorderPane.setAlignment(mCenterPane, Pos.CENTER);
+
 
         mRoot = new BorderPane();
 
@@ -65,12 +73,22 @@ public class Main extends Application
 
 
         mViewSettings.setOnAction((e) -> {
-            //((FlowPane)mSettingsScene.getRoot()).setPrefHeight(mRoot.getPrefHeight());
-            //((FlowPane)mSettingsScene.getRoot()).setPrefWidth(mRoot.getPrefWidth());
+            if (mCenterPane.getChildren().contains(mGScore)) {
+                mCenterPane.getChildren().remove(mGScore);
+            }
+
+            if (!mCenterPane.getChildren().contains(mScrollPane)) {
+                mCenterPane.getChildren().addAll(mScrollPane);
+            }
         });
 
         mViewMain.setOnAction((e) -> {
-            primaryStage.setScene(mMainScene);
+            if (mCenterPane.getChildren().contains(mScrollPane)) {
+                mCenterPane.getChildren().remove(mScrollPane);
+            }
+            if (!mCenterPane.getChildren().contains(mGScore)) {
+                mCenterPane.getChildren().addAll(mGScore);
+            }
         });
 
 
@@ -92,28 +110,6 @@ public class Main extends Application
     }
 
 
-    private void noteSetup () {
-        mPossibleNotes = new HashMap<>();
-        String[] noteNames = {"C", "D", "E", "F", "G", "A", "H"};
-        int[] midiSteps = {2,2,1,2,2,2,1};
-
-        for (int midi = 24, i = 0,nameCounter = 1; midi <= 95;) {
-
-            mPossibleNotes.put(new Note(noteNames[i] + nameCounter, midi), false);
-
-            System.out.println("Note: " + noteNames[i] + nameCounter + " - " +  midi + " -- " + midiSteps[i]);
-
-            midi += midiSteps[i];
-
-            if (noteNames[i].equals("H")) {
-                nameCounter++;
-                i = 0;
-                continue;
-            }
-            i++;
-        }
-
-    }
 
     @Override
     public void pitchChanged(int pitch, boolean status) {
