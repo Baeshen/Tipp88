@@ -7,6 +7,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
+import notenorie.data.Note;
 import notenorie.helper.ScoreHelper;
 
 import java.util.ArrayList;
@@ -117,7 +118,7 @@ public class ScorePane extends GridPane {
      * @param pitch pitch of the note that should be added
      * @return  boolean that determines of the note was added
      */
-    public boolean addNote (int pitch) {
+    public Note addNote (int pitch) {
 
         mPitchContainer.add(pitch);
 
@@ -127,14 +128,14 @@ public class ScorePane extends GridPane {
         try {
             rowIndex = mScoreHelper.getNoteScorePosition(getClef(), pitch);
         } catch (NullPointerException e) {
-            return false;
+            return null;
         }
 
         if (rowIndex < getUpperLimit() || rowIndex > getLowerLimit()) {
-            return false;
+            return null;
         }
 
-        Circle circle = new Circle(getGridBoxHeight()/2 - 3, Color.BLACK);
+        Note circle = new Note("", pitch,getGridBoxHeight()/2 - 3, Color.BLACK);
         mScoreShapeContainer.add(circle);
         GridPane.setHalignment(circle, HPos.CENTER);
         GridPane.setValignment(circle, VPos.CENTER);
@@ -147,7 +148,7 @@ public class ScorePane extends GridPane {
 
             add(rectangle, columnIndex, rowIndex);
         }
-        return true;
+        return circle;
     }
 
     /**

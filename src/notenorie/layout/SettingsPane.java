@@ -41,7 +41,7 @@ public class SettingsPane extends FlowPane {
 
             getChildren().add(test);
 
-            test.setText("Octave " + octaveCounter);
+            test.setText("Octave " + octaveCounter + "");
 
             octave.setHgap(10);
             octave.setVgap(10);

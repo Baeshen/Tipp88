@@ -1,6 +1,10 @@
 package notenorie.data;
 
-public class Note {
+import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
+import javafx.scene.shape.Circle;
+
+public class Note extends Circle {
 
     private String mName;
     private int mPitch;
@@ -8,6 +12,12 @@ public class Note {
     public Note (String name, int pitch) {
         setName(name);
         setPitch(pitch);
+    }
+
+    public Note (String name, int pitch, double size, Paint fill) {
+        this(name, pitch);
+        this.setRadius(size);
+        this.setFill(fill);
     }
 
     public String getName() {
