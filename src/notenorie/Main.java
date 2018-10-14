@@ -180,7 +180,7 @@ public class Main extends Application
 
     private synchronized void play () {
         Runnable runnable = () -> {
-            // @ToDo add Stop Button, maybe?
+            // @ToDo add Stop Button/ Refresh
             while (true) {
                 Platform.runLater(() -> {
                     mNotesToPlay.clear();
