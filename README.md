@@ -1,2 +1,4 @@
-# notenorie
-(wip) A programm that should help you to learn how to play the correct notes based on sheetmusic
+# Tipp88 (WIP)
+
+Similar to the software tipp10, which teaches you to write with ten fingers, just instead this is intende for a midi Keyboard with up to the full 88 keys.
+
